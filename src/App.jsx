@@ -17,8 +17,7 @@ function App() {
     <Route path="/*" element={<h1>404 NotFound</h1>}/>
     </Routes>
     </BrowserRouter>
-    //<LoginPage/>
-    //<AdminPage/>
+    
   )
 }
 
