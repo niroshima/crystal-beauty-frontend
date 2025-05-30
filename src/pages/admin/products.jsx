@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useState,useEffect } from "react"
+import { FaRegTrashAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { Link} from "react-router-dom";
 
 export default function AdminProductsPage(){
@@ -34,6 +36,7 @@ return(
     <th className="p-2">Price</th>
     <th className="p-2">Labled Price</th>
     <th className="p-2">Stock</th>
+    <th className="p-2">Actions</th>
 </tr>
              </thead>
              <tbody>
@@ -49,6 +52,15 @@ return(
          <td className="p-2">{product.price}</td>
           <td className="p-2">{product.labelPrice}</td>
            <td className="p-2">{product.stock}</td>
+           <td className="p-2">
+<div className="w-full h-full flex justify-center">
+  
+    <FaRegTrashAlt /> 
+    <HiOutlinePencilSquare />
+
+</div>
+
+           </td>
 </tr>
            
             )
