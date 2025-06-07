@@ -1,22 +1,29 @@
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link ,useLocation,useNavigate} from "react-router-dom";
 import axios from "axios";
 import mediaUpload from "../../../utils/mediaUpload";
 
-export default function AddProductForm(){
 
-const [productId,setProductId]=useState("");
-const [name,setName]=useState("");
-const [altName,setAltNames]=useState("");
-const [price,setPrice]=useState("");
-const [labeledPrice,setLabeledPrice]=useState("");
-const [description,setDescription]=useState("");
-const [stock,setStock]=useState("");
+export default function EditProductForm(){
+
+const locationData=useLocation() // take data while navigate the page.this hook is a json
+//console.log(locationData)
+const navigate=useNavigate();
+
+if(locationData.state==null)
+{
+   toast.error("Plase select a prodcut to edit")
+    window.location.href="/admin/products"
+}
+const [productId,setProductId]=useState(locationData.state.productId);
+const [name,setName]=useState(locationData.state.name);
+const [altName,setAltNames]=useState(locationData.state.altName.join(","));
+const [price,setPrice]=useState(locationData.state.price);
+const [labeledPrice,setLabeledPrice]=useState(locationData.state.labeledPrice);
+const [description,setDescription]=useState(locationData.state.description);
+const [stock,setStock]=useState(locationData.state.stock);
 const [images,setImages]=useState([]);
-
-const navigate=useNavigate()
-
 
 
    async function handleSubmit(){
@@ -27,11 +34,16 @@ const navigate=useNavigate()
         const promise=mediaUpload(images[i]);
         promiseArray[i]=promise;
     }
-    const result=await Promise.all(promiseArray)
+    try{
+    let result=await Promise.all(promiseArray)
+
+    if(images.lenght==0){
+        result=locationData.state.images
+    }
 
     const altNamesInArray=altName.split(",")
         const product={
-           productId: productId,
+           //productId: productId,
            name:name,
            altName:altNamesInArray,
            price:price,
@@ -43,29 +55,28 @@ const navigate=useNavigate()
         }
                  const token=localStorage.getItem("token")
  
-        axios.post(import.meta.env.VITE_BACKEND_URL+"/api/product",product,{
+        await axios.put(import.meta.env.VITE_BACKEND_URL+"/api/product/"+productId,product,{
             headers:{
                 "Authorization": "Bearer "+token
             }
-        }).then(
-           ()=>{
-            toast.success("Product added successfully")
+        })
+            toast.success("Product updated successfully")
             navigate("/admin/products")
-           } 
-        ).catch(
-            ()=>{
-                toast.error("Product adding failed")
+           } catch
+            (error){
+                toast.error("Product updating failed")
             }
-        )
+    
 
     }
     return(
 
         <div className="w-full h-full rounded-lg flex justify-center items-center">
             <div className="w-[500px] h-[600px] rounded-lg shadow-lg flex flex-col items-center"> 
-                <h1 className="text-3xl font-bold text-gray-700 m-[10px]">Add Products</h1>
+                <h1 className="text-3xl font-bold text-gray-700 m-[10px]">Edit Products</h1>
 
-            <input 
+            <input
+            disabled 
             value={productId}
             onChange={(e)=>{
                 setProductId(e.target.value)
@@ -142,7 +153,7 @@ const navigate=useNavigate()
         Cancel
         </Link>
         <button onClick={handleSubmit} className="w-[180px] text-center bg-green-500 text-white p-[10px] rounded-lg pointer-center hover:bg-green-600">
-       Add Product
+       Edit Product
         </button>
             </div>
 
