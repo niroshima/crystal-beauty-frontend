@@ -36,8 +36,9 @@ cart.map((item,index)=>{
            <img src={item.image} className="h-full aspect-square object-cover"/>
            <div className="h-full max-w-[400px] w-[400px] overflow-hidden">
             <h1 className="text-xl font-bold">{item.name}</h1>
-             <h2 className="text-lg text-gray-500">{item.altName.join(" | ")}</h2>
-                <h2 className="text-lg text-gray-500">{item.price.toFixed(2)}</h2>
+
+          
+            <h2 className="text-lg text-gray-500">{item.price.toFixed(2)}</h2>
            </div>
 
            <div className="h-full w-[100px] flex justify-center items-center">

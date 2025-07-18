@@ -6,10 +6,12 @@ import Testing from './pages/testing'
 import { Toaster} from 'react-hot-toast'
 import RegisterPage from './pages/client/register'
 import HomePage from './pages/homePage'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
   
   return (
+    <GoogleOAuthProvider clientId="20674058572-nmflpouah54np788a95vs9acvnr6q8jc.apps.googleusercontent.com">
     <BrowserRouter>
     <Toaster position="top-right"/>
     <Routes path="/*">
@@ -21,7 +23,7 @@ function App() {
    
     </Routes>
     </BrowserRouter>
-    
+      </GoogleOAuthProvider>
   )
 }
 

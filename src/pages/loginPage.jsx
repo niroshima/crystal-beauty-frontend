@@ -3,13 +3,42 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+import { GrGoogle } from "react-icons/gr";
 
 export default function LoginPage(){
 //use hook useState here
-const[email,setEmail]=useState("")
-const[password,setPassword]=useState("")
-const[loading,setLoading]=useState(false)
-const navigate=useNavigate()
+const [email,setEmail]=useState("")
+const [password,setPassword]=useState("")
+const [loading,setLoading]=useState(false);
+const [loadingGoogleLogin, setLoadingGoogleLogin] = useState(false);
+const navigate=useNavigate();
+
+const loginWithGoogle = useGoogleLogin({
+		onSuccess: (res) => {
+			setLoadingGoogleLogin(true);
+			axios
+				.post(import.meta.env.VITE_BACKEND_URL + "/api/user/google", {
+					accessToken: res.access_token,
+				})
+				.then((response) => {
+					console.log("Login successful", response.data);
+					toast.success("Login successful");
+					localStorage.setItem("token", response.data.token);
+
+					const user = response.data.user;
+					if (user.role === "admin") {
+						navigate("/admin");
+					} else {
+						navigate("/");
+					}
+                    setLoadingGoogleLogin(false);
+					});
+				
+		},
+	});
+
+
 
 function handleLogin(){
         //console.log("Email: ",email);
@@ -68,6 +97,17 @@ setLoading(true)
                     }
 
                 </button>
+
+                <button
+						className="w-[400px] h-[50px] bg-green-500 mt-[20px] text-white rounded-xl cursor-pointer flex justify-center items-center"
+						onClick={loginWithGoogle}
+					>
+						<GrGoogle className="mr-[10px]" />
+						{
+                        loadingGoogleLogin ? "Loading..." : "Login with Google"
+                        }
+					</button>
+
                 <p className="text-gray-600 text-center m-[10px]">Don't have an account yet?
                 &nbsp;
                 <span className="text-green-500 cursor-pointer hover:text-green-700">

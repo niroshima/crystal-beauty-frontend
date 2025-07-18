@@ -27,40 +27,41 @@ useEffect(
             axios.get(import.meta.env.VITE_BACKEND_URL+"/api/product/"+params.id).then(
                
                 (res)=>{
-                    console.log(res)
-                    setProduct(res.data.product)
-                    setStatus("loaded")
+                    console.log(res);
+                    setProduct(res.data.product);
+                    setStatus("loaded");
                 }
             ).catch(
                 ()=>{
-                    toast.error("Product is not available")
-                    setStatus("error")
-                }
-            )
+                    toast.error("Product is not available");
+                    setStatus("error");
+                });
         }
     },[status]
-)
+);
 return(
     <div className="w-full h-full"> 
-    {
-    status=="loading"&&<Loader/>
-    }
-    {
-        status=="loaded"&&
+    {status=="loading" && <Loader/>}
+    {status=="loaded" && (
         <div className="w-full h-full flex">
-          
+          <h1 className="text-3xl lg:hidden  font-bold text-center mb-[40px]">
+						{product.name}
+						{" | "}
+						<span className="text-3xl mr-[20px] text-gray-500">
+							{product.altName.join(" | ")}
+						</span>
+					</h1>
           <div className="w-[50%] h-full">
             <ImageSlider images={product.images}/>
           </div>
 <div className="w-[50%] h-full p-[40px]">
     <h1 className="text-3xl font-bold text-center mb-[40px]">{product.name} 
         {" | "} 
-<span className="text-3xl mr-[20px] text-gray-500">{product.altName.join("|")}</span>
+<span className="text-3xl mr-[20px] text-gray-500">{product.altName.join(" | ")}</span>
     </h1>
 
     <div className="w-full flex justify-center mb-[40px]">
-        {
-        product.labeledPrice>product.price?(
+        {product.labeledPrice>product.price?(
             <>
             <h2 className="text-2xl mr-[20px]">LKR: {product.price.toFixed(2)}</h2>
             <h2 className="text-2xl line-through text-gray-500">LKR: {product.labeledPrice.toFixed(2)}</h2>
@@ -72,16 +73,16 @@ return(
         }
     </div>
     <p className="text-xl text-center text-gray-500 mb-[40px]">{product.description}</p>
-
-    <button className="bg-pink-800 border border-pink-800 text-white w-[200px] h-[50px] rounded-lg hover:bg-white hover:text-pink-800 transition-all duration-300 ease-in-out cursor-pointer" onClick={
-        ()=>{
-            addToCart(product,1)
-            toast.success("Product added to cart")
-            console.log(getCart())
+<div className="w-full flex justify-center mb-[40px]">
+    <button className="bg-pink-800 border border-pink-800 text-white w-[200px] h-[50px] rounded-lg hover:bg-white hover:text-pink-800 transition-all duration-300 ease-in-out cursor-pointer" 
+    onClick={()=>{
+            addToCart(product,1);
+            toast.success("Product added to cart");
+            console.log(getCart());
         }}>Add to Cart</button>
 
-    <button className="bg-pink-800 border border-pink-800 text-white w-[200px] h-[50px] rounded-lg hover:bg-white hover:text-pink-800 transition-all duration-300 ease-in-out ml-[20px] cursor-pointer" onClick={
-        ()=> {
+    <button className="bg-pink-800 border border-pink-800 text-white w-[200px] h-[50px] rounded-lg hover:bg-white hover:text-pink-800 transition-all duration-300 ease-in-out ml-[20px] cursor-pointer" 
+    onClick={()=> {
 									navigate("/checkout", {
 										state: {
 											items: [
@@ -101,15 +102,16 @@ return(
 
 </div>
             </div>
+            </div>
 
-    }
+    )}
 
     {
-        status=="error"&&<div>
+        status=="error" && <div>
             ERROR
             </div>
     }
     
     </div>
-)
+);
 }

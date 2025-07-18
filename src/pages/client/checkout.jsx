@@ -4,6 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+
+
+
 export default function CheckoutPage() {
 	const location = useLocation();
 	const [cart, setCart] = useState(location.state.items);
@@ -47,7 +50,7 @@ export default function CheckoutPage() {
 		});
 		return total;
 	}
-	function getTotalForLabelledPrice() {
+	function getTotalForLabeledPrice() {
 		let total = 0;
 		cart.forEach((item) => {
 			total += item.labeledPrice * item.quantity;
@@ -81,9 +84,7 @@ export default function CheckoutPage() {
 							/>
 							<div className="h-full max-w-[300px] w-[300px] overflow-hidden">
 								<h1 className="text-xl font-bold">{item.name}</h1>
-								<h2 className="text-lg text-gray-500">
-									{item.altName.join(" | ")}
-								</h2>
+								
 								<h2 className="text-lg text-gray-500">
 									LKR: {item.price.toFixed(2)}
 								</h2>
@@ -126,13 +127,13 @@ export default function CheckoutPage() {
 				<div className="w-full  flex justify-end">
 					<h1 className="w-[100px] text-xl  text-end pr-2">Total</h1>
 					<h1 className="w-[100px] text-xl  text-end pr-2">
-						{getTotalForLabelledPrice().toFixed(2)}
+						{getTotalForLabeledPrice().toFixed(2)}
 					</h1>
 				</div>
 				<div className="w-full  flex justify-end">
 					<h1 className="w-[100px] text-xl  text-end pr-2">Discount</h1>
 					<h1 className="w-[100px] text-xl border-b-[2px] text-end pr-2">
-						{(getTotalForLabelledPrice() - getTotal()).toFixed(2)}
+						{(getTotalForLabeledPrice() - getTotal()).toFixed(2)}
 					</h1>
 				</div>
 				<div className="w-full  flex justify-end">

@@ -15,11 +15,12 @@ return cart
 }
 
 export function addToCart(product,qty){
+   
 let cart=getCart(); //exiting card looking
 
-const productIndex=cart.findIndex((pd)=>pd.productId===product.productId); //pass karana product Id eka cart eke thiyenawada
+const productIndex=cart.findIndex((prdct)=>prdct.productId===product.productId); //pass karana product Id eka cart eke thiyenawada
 //if it is not exiting create a new one
-if(productIndex== -1){
+if(productIndex==-1){
     cart.push(
         {
             productId:product.productId,
@@ -35,7 +36,7 @@ if(productIndex== -1){
 }else{
     cart[productIndex].quantity+=qty
     if(cart[productIndex].quantity<=0){
-        cart=cart.filter((pd)=>pd.productId !== product.productId)
+        cart=cart.filter((prdct)=>prdct.productId !== product.productId)
     }
 }
 localStorage.setItem("cart",JSON.stringify(cart))
