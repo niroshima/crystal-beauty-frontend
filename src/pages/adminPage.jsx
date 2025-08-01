@@ -1,18 +1,56 @@
-import { Link, Routes, Route} from "react-router-dom";
+import { Link, Routes, Route, useNavigate} from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import { MdWarehouse } from "react-icons/md";
 import { FaFileInvoice } from "react-icons/fa6";
 import AdminProductsPage from "./admin/products";
 import AddProductForm from "./admin/addProductForm";
 import EditProductForm from "./admin/editProduct";
-import RegisterPage from "./client/register";
 import AdminOrdersPage from "./admin/adminOrders";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import Loader from "../components/loader";
 
 
 export default function AdminPage(){
     //hooks here
+
+    const [userValidated, setUserValidated] = useState(false);
+	const navigate = useNavigate();
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		if (token == null) {
+			toast.error("You are not logged in");
+			navigate("/login");
+		} else {
+			axios
+				.get(import.meta.env.VITE_BACKEND_URL + "/api/user/current", {
+					headers: {
+						Authorization: "Bearer " + token,
+					},
+				})
+				.then((response) => {
+                    console.log(response.data);
+                    if(response.data.user.role == "admin"){
+                        setUserValidated(true);
+                    }else{
+                        toast.error("You are not an admin");
+                        navigate("/login");
+                    }
+                }).catch(
+                    ()=>{
+                        toast.error("Something went wrong please login again");
+                        navigate("/login");
+                    }
+                )
+		}
+	}, []);
+
     return(
         <div className="w-full h-screen bg-gray-200 flex p-2">
+
+            {userValidated ? (
+				<>
             <div className="h-full w-[300px]">
     
             <Link to="/admin/users" className="p-2 border flex items-center"><FaUsers className="mr-2"/> Users</Link>
@@ -30,6 +68,11 @@ export default function AdminPage(){
                
                </Routes>
                 </div>
+
+                </>
+			) : (
+				<Loader/>
+			)}
         </div>
     );
 }
