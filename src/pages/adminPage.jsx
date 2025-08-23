@@ -1,6 +1,6 @@
 import { Link, Routes, Route, useNavigate} from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
-import { MdWarehouse } from "react-icons/md";
+import { MdContactMail, MdWarehouse } from "react-icons/md";
 import { FaFileInvoice } from "react-icons/fa6";
 import AdminProductsPage from "./admin/products";
 import AddProductForm from "./admin/addProductForm";
@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Loader from "../components/loader";
+import AdminUserPage from "./admin/users";
+import ContactMessages from "./admin/contactMessages";
 
 
 export default function AdminPage(){
-    //hooks here
-
     const [userValidated, setUserValidated] = useState(false);
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -56,15 +56,16 @@ export default function AdminPage(){
             <Link to="/admin/users" className="p-2 border flex items-center"><FaUsers className="mr-2"/> Users</Link>
             <Link to="/admin/products" className="p-2 border flex items-center"><MdWarehouse className="mr-2"/>Products</Link>
             <Link to="/admin/orders" className="p-2 border flex items-center"><FaFileInvoice className="mr-2"/>Orders</Link>
-
+            <Link to="/admin/contact-messages" className="p-2 border flex items-center"><MdContactMail className="mr-2" /> Contact Messages</Link>
 </div>
              <div className="h-full bg-white w-[calc(100vw-300px)] rounded-lg">
                <Routes path="/*">
-               <Route path="/users" element={<h1>Users</h1>}/>
+               <Route path="/users" element={<AdminUserPage/>}/>
                <Route path="/products" element={<AdminProductsPage/>}/>
                <Route path="/orders" element={<AdminOrdersPage/>}/>
               <Route path="/addProduct" element={<AddProductForm/>}/>
               <Route path="/editProduct" element={<EditProductForm/>}/>
+              <Route path="/contact-messages" element={<ContactMessages />} />
                
                </Routes>
                 </div>

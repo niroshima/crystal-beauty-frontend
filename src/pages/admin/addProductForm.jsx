@@ -13,6 +13,7 @@ const [price,setPrice]=useState("");
 const [labeledPrice,setLabeledPrice]=useState("");
 const [description,setDescription]=useState("");
 const [stock,setStock]=useState("");
+const [category,setCategory]=useState("");
 const [images,setImages]=useState([]);
 
 const navigate=useNavigate()
@@ -30,6 +31,7 @@ const navigate=useNavigate()
     const result=await Promise.all(promiseArray)
 
     const altNamesInArray=altName.split(",")
+
         const product={
            productId: productId,
            name:name,
@@ -38,6 +40,7 @@ const navigate=useNavigate()
            labeledPrice:labeledPrice,
            description:description,
            stock:stock,
+           category:category,
            images:result
 
         }
@@ -136,6 +139,18 @@ const navigate=useNavigate()
             type="number"
             className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]" 
             placeholder="Stock"/>
+
+           <select
+           value={category}
+           onChange={(e) => setCategory(e.target.value)}
+           className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
+           >
+            <option value="">Select Category</option>
+            <option value="Skincare">Skincare</option>
+            <option value="Makeup">Makeup</option>
+            <option value="Haircare">Haircare</option>
+            <option value="Fragrance">Fragrance</option>
+            </select>
 
             <div className="w-[400px] h-[100px] flex justify-between items-center rounded-lg">
                 <Link to={"/admin/products"} className="w-[180px] text-center bg-red-500 text-white p-[10px] rounded-lg pointer-center hover:bg-red-600">

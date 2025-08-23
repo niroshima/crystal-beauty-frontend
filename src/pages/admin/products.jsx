@@ -71,6 +71,7 @@ return(
     <th className="p-2">Price</th>
     <th className="p-2">Labled Price</th>
     <th className="p-2">Stock</th>
+    <th className="p-2">Category</th>
     <th className="p-2">Actions</th>
 </tr>
              </thead>
@@ -88,6 +89,7 @@ return(
          <td className="p-2">{product.price}</td>
           <td className="p-2">{product.labeledPrice}</td>
            <td className="p-2">{product.stock}</td>
+           <td className="p-2">{product.category}</td>
            <td className="p-2">
 <div className="w-full h-full flex justify-center">
   
