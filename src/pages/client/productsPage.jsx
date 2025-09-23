@@ -2,28 +2,34 @@ import axios from "axios"
 import Loader from "../../components/loader"
 import { useEffect, useState } from "react"
 import ProductCard from "../../components/product-card"
+import { useLocation } from "react-router-dom"
 
 export default function ProductsPage(){
     //need to use productarray use state and product loaded useState
     const [productList,setProductList]=useState([])
     const [productsLoaded,setProductsLoaded]=useState(false)
-
     const [search,setSearch]=useState("")
+    
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const categoryQuery = queryParams.get("category"); // get category from URL
 
-useEffect(
-    ()=>{
-        if(!productsLoaded){
-            axios.get(import.meta.env.VITE_BACKEND_URL+"/api/product/").then(
-                (res)=>{
-                    setProductList(res.data)
-                    setProductsLoaded(true)
-                }
-            )
+useEffect(() => {
+    if (!productsLoaded) {
+      let url = import.meta.env.VITE_BACKEND_URL + "/api/product/";
+      if (categoryQuery) {
+        url += "category/" + categoryQuery; // backend should support this route
+      }
 
-        }
+      axios.get(url).then((res) => {
+        setProductList(res.data.products || res.data);
+        setProductsLoaded(true);
+      });
+    }
+  }, [productsLoaded, categoryQuery]
+);
 
-    },[productsLoaded]
-)
+
 function searchProducts() {
     if (search.length > 0) {
         axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search).then(
@@ -32,6 +38,15 @@ function searchProducts() {
             })
     } 
 }
+
+function resetProducts() {
+    setSearch(""); // clear the search input
+    axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product/").then((res) => {
+        setProductList(res.data.products || res.data);
+    });
+}
+
+
 return(
     <div className="h-full w-full">
 
@@ -44,9 +59,15 @@ return(
             <button className="bg-blue-500 text-white p-2 rounded-md ml-2"
                 onClick={()=>{
                     searchProducts()
-                    }}
-                >
-                Search</button>
+                    }}>
+                Search
+            </button>
+
+
+                <button className="bg-blue-500 text-white p-2 rounded-md ml-2" 
+                onClick={resetProducts}>
+                    Reset
+                </button>
         </div>
 {
     productsLoaded?

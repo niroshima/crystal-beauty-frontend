@@ -26,6 +26,7 @@ export default function CheckoutPage() {
         for(let i = 0; i< cart.length; i++){
             orderData.billItems[i] = {
                 productId : cart[i].productId,
+				productName: cart[i].name,
                 quantity : cart[i].quantity
             }
         }
@@ -36,7 +37,7 @@ export default function CheckoutPage() {
             },            
         }).then(()=>{
             toast.success("Order placed successfully");
-            navigate("/");
+            navigate(`/product/${cart[0].productId}/reviews`);
         }).catch((error)=>{
             console.log(error);
             toast.error("Order placement failed");

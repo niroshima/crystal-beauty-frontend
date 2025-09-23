@@ -6,6 +6,7 @@ import CartPage from "./client/cart";
 import CheckoutPage from "./client/checkout";
 import LandingPage from "./client/homeLandingPage";
 import ContactPage from "./client/contactPage";
+import ReviewerPage from "./client/reviwersPage";
 
 export default function HomePage(){
 
@@ -21,6 +22,10 @@ export default function HomePage(){
                <Route path="/cart" element={<CartPage/>}/>
                <Route path="/checkout" element={<CheckoutPage/>}/>
                <Route path="/contact" element={<ContactPage/>}/>
+
+              <Route path="/review" element={<ReviewerPage />} />
+               
+               
                <Route path="/*" element={<h1>404 NotFound</h1>}/>
               
                
