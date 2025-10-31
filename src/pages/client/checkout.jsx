@@ -37,7 +37,8 @@ export default function CheckoutPage() {
             },            
         }).then(()=>{
             toast.success("Order placed successfully");
-            navigate(`/product/${cart[0].productId}/reviews`);
+            navigate('/review');
+			
         }).catch((error)=>{
             console.log(error);
             toast.error("Order placement failed");
