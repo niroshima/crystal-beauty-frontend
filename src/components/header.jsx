@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Header(){
 
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     return(
 <header className="w-full h-[70px] flex justify-start items-center bg-gray-100 relative">
     <RxHamburgerMenu className="lg:hidden text-3xl text-accent mx-4" onClick={
@@ -24,7 +24,7 @@ export default function Header(){
 
  {
                 isOpen&&(
-                    <div className="fixed z-[9999] top-0 left-0 bg-[#00000060] w-full h-screen flex">
+                    <div className="fixed lg:hidden z-[9999] top-0 left-0 bg-[#00000060] w-full h-screen flex">
                         <div className="w-[300px] h-full bg-white  flex flex-col justify-start items-start p-4">
                             <RxHamburgerMenu className="text-3xl text-accent" onClick={()=>setIsOpen(false)} />
                             <Link to="/" className="text-xl text-accent my-4">Home</Link>
